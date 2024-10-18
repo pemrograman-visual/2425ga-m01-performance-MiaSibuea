@@ -1,102 +1,177 @@
-<?xml version="1.0"?>
-<flowgorithm fileversion="4.2">
-    <attributes>
-        <attribute name="name" value="M01"/>
-        <attribute name="authors" value="Frank Niroy"/>
-        <attribute name="about" value=""/>
-        <attribute name="saved" value="2024-10-18 11:29:44 AM"/>
-        <attribute name="created" value="RnJhbmsgTmlyb3k7RlJBTks7MjAyMy0xMC0xNjswMS4wOC4zMiBQTTsyNjc4"/>
-        <attribute name="edited" value="RnJhbmsgTmlyb3k7RlJBTks7MjAyMy0xMC0xNjswNC4zNC41MiBQTTszNjsyODQ2"/>
-        <attribute name="edited" value="QUNFUjtNSUFTSUJVRUExNTsyMDI0LTEwLTE4OzExOjI5OjQ0IEFNOzI7MjQxOA=="/>
-    </attributes>
-    <function name="Main" type="None" variable="">
-        <parameters/>
-        <body>
-            <declare name="performa, nilai, A, AB, B, BC, C, D, E" type="Real" array="False" size=""/>
-            <declare name="kredit1" type="Real" array="False" size=""/>
-            <declare name="nilai1, kredit" type="String" array="False" size=""/>
-            <assign variable="kredit1" expression="0"/>
-            <assign variable="A" expression="4.0"/>
-            <assign variable="AB" expression="3.5"/>
-            <assign variable="B" expression="3.0"/>
-            <assign variable="BC" expression="2.5"/>
-            <assign variable="C" expression="2.0"/>
-            <assign variable="D" expression="1.0"/>
-            <assign variable="E" expression="0.0"/>
-            <input variable="kredit"/>
-            <if expression="kredit = &quot;---&quot;">
-                <then>
-                    <assign variable="kredit" expression="kredit"/>
-                </then>
-                <else>
-                    <assign variable="kredit1" expression="toReal(kredit)"/>
-                </else>
-            </if>
-            <input variable="nilai1"/>
-            <while expression="nilai1 != &quot;---&quot;">
-                <if expression="nilai1 = &quot;A&quot;">
-                    <then>
-                        <assign variable="nilai" expression="4.0"/>
-                    </then>
-                    <else>
-                        <if expression="nilai1 = &quot;AB&quot;">
-                            <then>
-                                <assign variable="nilai" expression="3.5"/>
-                            </then>
-                            <else>
-                                <if expression="nilai1 = &quot;B&quot;">
-                                    <then>
-                                        <assign variable="nilai" expression="3.0"/>
-                                    </then>
-                                    <else>
-                                        <if expression="nilai1 = &quot;BC&quot;">
-                                            <then>
-                                                <assign variable="nilai" expression="2.5"/>
-                                            </then>
-                                            <else>
-                                                <if expression="nilai1 = &quot;C&quot;">
-                                                    <then>
-                                                        <assign variable="nilai" expression="2.0"/>
-                                                    </then>
-                                                    <else>
-                                                        <if expression="nilai1 = &quot;D&quot;">
-                                                            <then>
-                                                                <assign variable="nilai" expression="1.0"/>
-                                                            </then>
-                                                            <else>
-                                                                <if expression="nilai1 = &quot;E&quot;">
-                                                                    <then>
-                                                                        <assign variable="nilai" expression="0.0"/>
-                                                                    </then>
-                                                                    <else>
-                                                                        <assign variable="nilai" expression="0.0"/>
-                                                                    </else>
-                                                                </if>
-                                                            </else>
-                                                        </if>
-                                                    </else>
-                                                </if>
-                                            </else>
-                                        </if>
-                                    </else>
-                                </if>
-                            </else>
-                        </if>
-                    </else>
-                </if>
-                <assign variable="performa" expression="(kredit1 * nilai)"/>
-                <output expression="toFixed(performa,1)" newline="True"/>
-                <input variable="kredit"/>
-                <if expression="kredit = &quot;---&quot;">
-                    <then>
-                        <assign variable="kredit" expression="kredit"/>
-                    </then>
-                    <else>
-                        <assign variable="kredit1" expression="toReal(kredit)"/>
-                    </else>
-                </if>
-                <input variable="nilai1"/>
-            </while>
-        </body>
-    </function>
-</flowgorithm>
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: m01-test-001
+      id: m01-test-001
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: m01-test-001
+        setup-command: javac M01.java
+        command: java M01
+        input: |
+          4
+          A
+          ---
+          ---
+        expected-output: '16.0
+
+          '
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: m01-test-002
+      id: m01-test-002
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: m01-test-002
+        setup-command: javac M01.java
+        command: java M01
+        input: |
+          4
+          AB
+          3
+          BC
+          ---
+          ---
+        expected-output: |
+          14.0
+          7.5
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: m01-test-003
+      id: m01-test-003
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: m01-test-003
+        setup-command: javac M01.java
+        command: java M01
+        input: |
+          2
+          E
+          3
+          E
+          4
+          E
+          ---
+          ---
+        expected-output: |
+          0.0
+          0.0
+          0.0
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: m01-test-004
+      id: m01-test-004
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: m01-test-004
+        setup-command: javac M01.java
+        command: java M01
+        input: |
+          4
+          A
+          3
+          A
+          2
+          A
+          4
+          AB
+          3
+          AB
+          2
+          AB
+          4
+          B
+          3
+          B
+          2
+          B
+          4
+          BC
+          3
+          BC
+          2
+          BC
+          4
+          C
+          3
+          C
+          2
+          C
+          4
+          D
+          3
+          D
+          2
+          D
+          4
+          E
+          3
+          E
+          2
+          E
+          ---
+          ---
+        expected-output: |
+          16.0
+          12.0
+          8.0
+          14.0
+          10.5
+          7.0
+          12.0
+          9.0
+          6.0
+          10.0
+          7.5
+          5.0
+          8.0
+          6.0
+          4.0
+          4.0
+          3.0
+          2.0
+          0.0
+          0.0
+          0.0
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: m01-test-005
+      id: m01-test-005
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: m01-test-005
+        setup-command: javac M01.java
+        command: java M01
+        input: |
+          ---
+          ---
+        expected-output: ''
+        comparison-method: exact
+        timeout: 1
+        max-score: 20
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        M01-TEST-001_RESULTS: "${{steps.m01-test-001.outputs.result}}"
+        M01-TEST-002_RESULTS: "${{steps.m01-test-002.outputs.result}}"
+        M01-TEST-003_RESULTS: "${{steps.m01-test-003.outputs.result}}"
+        M01-TEST-004_RESULTS: "${{steps.m01-test-004.outputs.result}}"
+        M01-TEST-005_RESULTS: "${{steps.m01-test-005.outputs.result}}"
+      with:
+        runners: m01-test-001,m01-test-002,m01-test-003,m01-test-004,m01-test-005
